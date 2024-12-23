@@ -1,4 +1,4 @@
-package main
+package LinkedList
 
 import (
 	"fmt"
@@ -218,7 +218,7 @@ func (p *MusicPlaylist) ViewPlaylist() string {
 	return result.String()
 }
 
-func musicPlayer() {
+func MusicPlayer() {
 	playlist := NewMusicPlaylist()
 	playlist.AddSong("1", "Hay trao cho anh", "MTP")
 	playlist.AddSong("2", "Muon roi ma sao con", "MTP")
