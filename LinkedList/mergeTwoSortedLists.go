@@ -55,35 +55,28 @@ func (n *NumberList) Length() int {
 	return count
 }
 func MergeList(list1 *NumberList, list2 *NumberList) *NumberList {
-	// Create a new list for the merged result
-	mergedList := NewNumberList()
-
-	// Get the first nodes of both lists
-	current1 := list1.currentNumber
-	current2 := list2.currentNumber
-
-	// While both lists have nodes to process
+	temp := &NumberList{
+		currentNumber: &Number{}, // Create a dummy Number node
+	}
+	prev := temp.currentNumber
+	current1, current2 := list1.currentNumber, list2.currentNumber
 	for current1 != nil && current2 != nil {
-		if current1.value <= current2.value {
-			// add the smaller value from list1
-			mergedList.AddNumberToList(current1.value)
+		if current1.value < current2.value {
+			prev.next = current1
 			current1 = current1.next
 		} else {
-			mergedList.AddNumberToList(current2.value)
+			prev.next = current2
 			current2 = current2.next
 		}
+		prev = prev.next
 	}
-	// Add remaining elements from list1, if any
-	for current1 != nil {
-		mergedList.AddNumberToList(current1.value)
-		current1 = current1.next
+	if current1 != nil {
+		prev.next = current1
+	} else {
+		prev.next = current2
 	}
-	for current2 != nil {
-		mergedList.AddNumberToList(current2.value)
-		current2 = current2.next
-	}
-	return mergedList
-
+	temp.currentNumber = temp.currentNumber.next
+	return temp
 }
 
 func (n *NumberList) ViewNumberList() string {
@@ -131,9 +124,9 @@ func MergeTwoSortedLists() {
 	numberList1 := NewNumberList()
 	numberList2 := NewNumberList()
 	// assign value to each list
-	numberList1.AddNumberToList(1)
-	numberList1.AddNumberToList(2)
 	numberList1.AddNumberToList(4)
+	numberList1.AddNumberToList(5)
+	numberList1.AddNumberToList(8)
 
 	numberList2.AddNumberToList(1)
 	numberList2.AddNumberToList(3)
