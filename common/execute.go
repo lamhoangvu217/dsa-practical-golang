@@ -58,8 +58,6 @@ func ExecuteLinkedListFeature(selection uint64) error {
 		LinkedList.BrowserHistory()
 	case 3:
 		LinkedList.MergeTwoSortedLists()
-	case 4:
-		LinkedList.MultiFeatures()
 	default:
 		return fmt.Errorf("invalid LinkedList feature selection")
 	}
@@ -74,6 +72,18 @@ func ExecutePointerFeature(selection uint64) error {
 		Pointers.PointerToStruct()
 	case 3:
 		Pointers.PointerArrays()
+	case 4:
+		Pointers.SwapValues()
+	case 5:
+		Pointers.PointerToSlices()
+	case 6:
+		Pointers.StudentGradeTracker()
+	case 7:
+		Pointers.ModifyValue()
+	case 8:
+		Pointers.SimpleCounter()
+	case 9:
+		Pointers.LibraryExercise()
 	default:
 		return fmt.Errorf("invalid Pointer feature selection")
 	}
