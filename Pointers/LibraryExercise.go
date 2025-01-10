@@ -2,6 +2,7 @@ package Pointers
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -42,17 +43,17 @@ func LibraryExercise() {
 	// 1. Check out a book, borrow a book, remove a book from library
 	checkOutBook(&library, 0)
 	checkOutBook(&library, 1)
-	fmt.Printf("\nAfter checking out first book:\n")
+	fmt.Printf("\nAfter checking out book:\n")
 	printLibraryStatus(&library)
 
 	// 2. Return a book, add a book into library
 	returnBook(&library, 0)
-	fmt.Printf("\nAfter returning first book:\n")
+	fmt.Printf("\nAfter returning book:\n")
 	printLibraryStatus(&library)
 
 	// 3. Update the most popular book
-	//updateMostPopular(&library, 0)
-	//fmt.Printf("\nMost popular book is now: %s\n", library.MostPopularBook.Title)
+	updateMostPopular(&library, 2)
+	fmt.Printf("\nMost popular book is now: %s\n", library.MostPopularBook.Title)
 }
 
 // checkOutBook should:
@@ -86,8 +87,18 @@ func checkOutBook(lib *Library, bookIndex int) bool {
 func returnBook(lib *Library, bookIndex int) bool {
 	// Your code here
 	// Remember to check if the book was actually checked out!
-	fmt.Println("processing")
-	return false
+	if bookIndex >= len((*lib).Books) || bookIndex < 0 { // dereference (*lib)
+		return false // Book doesn't exist
+	}
+	bookToReturn := &(*lib).Books[bookIndex]
+
+	if bookToReturn.IsCheckedOut == false {
+		fmt.Println("This book is still in library")
+		return false
+	}
+	bookToReturn.IsCheckedOut = false
+	(*lib).CheckedOutBooks -= 1
+	return true
 }
 
 // updateMostPopular should:
@@ -96,15 +107,24 @@ func returnBook(lib *Library, bookIndex int) bool {
 func updateMostPopular(lib *Library, bookIndex int) {
 	// Your code here
 	// Hint: think about how to make MostPopularBook point to a book in the slice
-	fmt.Println("processing")
+	if bookIndex >= len((*lib).Books) || bookIndex < 0 { // dereference (*lib)
+		fmt.Println("Book does not exist")
+	}
+	bookToUpdate := &(*lib).Books[bookIndex]
+	(*lib).MostPopularBook = bookToUpdate
+	fmt.Println("Added to most popular book successfully!!!")
 }
 
 // printLibraryStatus prints the current status of the library
-func printLibraryStatus(lib *Library) {
+func printLibraryStatus(libs *Library) {
 	// Your code here
 	// Print total books, checked out books, and the most popular book if it exists
 	var sb strings.Builder
-	for i, lib := range (*lib).Books {
-		sb.WriteString(fmt.Sprintf("%d: %s", i, lib.Title))
+	for i, lib := range (*libs).Books {
+		sb.WriteString(fmt.Sprintf("%d: %s - Checkout status: %s", i, lib.Title, strconv.FormatBool(lib.IsCheckedOut)))
+		if i < len((*libs).Books)-1 {
+			sb.WriteString(", ")
+		}
 	}
+	fmt.Println(sb.String())
 }
